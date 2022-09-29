@@ -88,6 +88,9 @@ flutter:
     - family: Futura
       fonts:
         - asset: assets/fonts/Futura.ttf
+    - family:  TryMeIcons
+      fonts:
+        - asset: assets/fonts/TryMeIcons.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

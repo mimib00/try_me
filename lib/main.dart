@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
           title: 'Try Me',
           debugShowCheckedModeBanner: false,
           theme: AppTheme.lightTheme,
-          initialRoute: Routes.root,
+          initialRoute: Routes.splash,
           getPages: Routes.allRoutes,
         );
       },

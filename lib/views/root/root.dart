@@ -1,22 +1,66 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:try_me/views/auth/controller/auth_controller.dart';
+import 'package:try_me/meta/utils/constants.dart';
+import 'package:try_me/meta/utils/try_me_icons_icons.dart';
+import 'package:try_me/views/root/controller/navigation_controller.dart';
 
-class RootScreen extends StatelessWidget {
+class RootScreen extends GetView<NavigationController> {
   const RootScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final auth = Get.find<AuthController>();
-    return Scaffold(
-      body: Center(
-        // child: Icon(TryMeIcons.calander),
-        child: Text(auth.users.value!.name),
-      ),
-      floatingActionButton: FloatingActionButton(onPressed: () async {
-        await FirebaseAuth.instance.signOut();
-      }),
-    );
+    return Obx(() {
+      return Scaffold(
+        extendBody: true,
+        body: controller.screen,
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: controller.index.value,
+          onTap: (index) {
+            controller.goto(index);
+          },
+          type: BottomNavigationBarType.fixed,
+          unselectedItemColor: ksecondaryColor,
+          selectedItemColor: kprimaryColor,
+          items: [
+            const BottomNavigationBarItem(
+              label: "Home",
+              icon: Icon(Icons.home),
+            ),
+            BottomNavigationBarItem(
+              label: "Freunde",
+              icon: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Icon(Icons.person),
+                  Icon(Icons.person),
+                ],
+              ),
+            ),
+            const BottomNavigationBarItem(
+              label: "Kalender",
+              icon: Icon(TryMeIcons.calander),
+            ),
+            BottomNavigationBarItem(
+              label: "Kleiderschrank",
+              icon: SvgPicture.asset(
+                "assets/images/logo.svg",
+                color: controller.index == 3 ? kprimaryColor : ksecondaryColor,
+                height: 25,
+                width: 25,
+              ),
+            ),
+          ],
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          child: const Icon(
+            Icons.add_rounded,
+            size: 40,
+          ),
+        ),
+      );
+    });
   }
 }

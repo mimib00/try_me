@@ -44,3 +44,4 @@ app.*.map.json
 /android/app/release
 *.xd
 TryMe Screens 03.10.21.xd
+*.pdf

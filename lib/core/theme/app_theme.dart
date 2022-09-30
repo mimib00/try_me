@@ -38,16 +38,17 @@ class AppTheme {
         fontFamily: "Futura",
       ),
       labelLarge: TextStyle(
-        fontSize: 14.sp,
-        fontWeight: FontWeight.bold,
-      ),
-      labelMedium: TextStyle(
         fontSize: 12.sp,
         fontWeight: FontWeight.bold,
       ),
-      labelSmall: TextStyle(
+      labelMedium: TextStyle(
         fontSize: 10.sp,
         fontWeight: FontWeight.bold,
+      ),
+      labelSmall: TextStyle(
+        fontSize: 8.sp,
+        fontWeight: FontWeight.bold,
+        letterSpacing: 1,
       ),
     ),
   );

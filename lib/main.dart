@@ -5,12 +5,14 @@ import 'package:sizer/sizer.dart';
 import 'package:try_me/core/routes/routes.dart';
 import 'package:try_me/core/theme/app_theme.dart';
 import 'package:try_me/firebase_options.dart';
+import 'package:try_me/views/auth/controller/auth_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  Get.put(AuthController(), permanent: true);
   runApp(const MyApp());
 }
 

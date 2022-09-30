@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sizer/sizer.dart';
 import 'package:try_me/meta/utils/constants.dart';
 import 'package:try_me/views/auth/controller/auth_controller.dart';
 

@@ -43,81 +43,113 @@ class RegisterScreen extends GetView<AuthController> {
           ),
           Positioned.fill(
             child: SafeArea(
-              child: Form(
-                key: controller.registerForm,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: 2.h),
-                      child: SvgPicture.asset(
-                        "assets/images/logo.svg",
-                        height: 40,
-                        width: 40,
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Form(
+                  key: controller.registerForm,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 2.h),
+                        child: SvgPicture.asset(
+                          "assets/images/logo.svg",
+                          height: 40,
+                          width: 40,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 2.h),
-                    const ProfilePictureSelector(),
-                    SizedBox(height: 2.h),
-                    CustomInput(
-                      controller: controller.name,
-                      hint: "Vor- & Nachname",
-                    ),
-                    CustomInput(
-                      controller: controller.username,
-                      hint: "Nutzername",
-                    ),
-                    CustomInput(
-                      controller: controller.email,
-                      hint: "Emailadresse",
-                    ),
-                    CustomInput(
-                      controller: controller.password,
-                      hint: "Passwort",
-                    ),
-                    CustomInput(
-                      controller: controller.confirmPassword,
-                      hint: "Passwort wiederholen",
-                    ),
-                    const SizedBox(height: 20),
-                    GenderSelector(
-                      onSelect: (value) {
-                        print(value);
-                      },
-                    ),
-                    const SizedBox(height: 20),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        CustomButton(
-                          onTap: () {},
-                          size: const Size(100, 60),
-                          child: const Text('Registrieren'),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 5.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Du hast bereits einen Account? ',
-                          style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
-                        ),
-                        GestureDetector(
-                          onTap: () => Get.offAllNamed(Routes.login),
-                          child: Text(
-                            'Melde dich an',
+                      SizedBox(height: 2.h),
+                      const ProfilePictureSelector(),
+                      SizedBox(height: 2.h),
+                      CustomInput(
+                        controller: controller.name,
+                        hint: "Vor- & Nachname",
+                        validator: (value) {
+                          if (value == null || value.isEmpty) return "Field Required";
+                          return null;
+                        },
+                      ),
+                      CustomInput(
+                        controller: controller.username,
+                        hint: "Nutzername",
+                        validator: (value) {
+                          if (value == null || value.isEmpty) return "Field Required";
+                          return null;
+                        },
+                      ),
+                      CustomInput(
+                        controller: controller.email,
+                        hint: "Emailadresse",
+                        validator: (value) {
+                          if (value == null || value.isEmpty) return "Bitte E-Mail eingeben";
+                          if (!value.isEmail) return "Email ist ungültig";
+                          return null;
+                        },
+                      ),
+                      CustomInput(
+                        controller: controller.password,
+                        hint: "Passwort",
+                        obscure: true,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) return "Field Required";
+                          if (value.length < 6) return "Password must be 6 characters or more";
+                          return null;
+                        },
+                      ),
+                      CustomInput(
+                        controller: controller.confirmPassword,
+                        hint: "Passwort wiederholen",
+                        obscure: true,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) return "Field Required";
+                          if (value != controller.password.text.trim()) return "Passwords not matching";
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      GenderSelector(
+                        onSelect: (value) {
+                          controller.gender = value;
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          CustomButton(
+                            onTap: () {
+                              if (controller.registerForm.currentState!.validate()) {
+                                controller.register();
+                              }
+                            },
+                            size: const Size(100, 60),
+                            child: const Text('Registrieren'),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 5.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Du hast bereits einen Account? ',
                             style: Theme.of(context).textTheme.labelSmall!.copyWith(
                                   fontWeight: FontWeight.bold,
-                                  color: kprimaryColor,
                                 ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                          GestureDetector(
+                            onTap: () => Get.offAllNamed(Routes.login),
+                            child: Text(
+                              'Melde dich an',
+                              style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: kprimaryColor,
+                                  ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

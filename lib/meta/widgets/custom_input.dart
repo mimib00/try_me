@@ -21,6 +21,7 @@ class CustomInput extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: TextFormField(
+        controller: controller,
         style: Theme.of(context).textTheme.labelMedium!.copyWith(
               fontWeight: FontWeight.w400,
             ),

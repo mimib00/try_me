@@ -9,7 +9,9 @@ class SplashController extends GetxController {
     FirebaseAuth.instance.authStateChanges().listen((user) {
       if (user == null) {
         Get.offAllNamed(Routes.login);
-      } else {}
+      } else {
+        Get.offAllNamed(Routes.root);
+      }
     });
     super.onInit();
   }

@@ -59,15 +59,28 @@ class LoginScreen extends GetView<AuthController> {
                       CustomInput(
                         controller: controller.email,
                         hint: "Nutzername oder Emailadresse",
+                        validator: (value) {
+                          if (value == null || value.isEmpty) return "Field Required";
+                          return null;
+                        },
                       ),
                       CustomInput(
                         controller: controller.password,
                         hint: "Passwort",
                         obscure: true,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) return "Field Required";
+                          if (value.length < 6) return "Password must be 6 characters or more";
+                          return null;
+                        },
                       ),
                       const SizedBox(height: 20),
                       CustomButton(
-                        onTap: () {},
+                        onTap: () {
+                          if (controller.loginForm.currentState!.validate()) {
+                            controller.login();
+                          }
+                        },
                         size: const Size(100, 60),
                         child: const Text('Login'),
                       ),

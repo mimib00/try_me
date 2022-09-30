@@ -41,11 +41,55 @@ class AuthController extends GetxController {
     update();
   }
 
-  void login() async {}
+  Future<String?> getEmail(String user) async {
+    String? email;
+    try {
+      final snap = await FirebaseFirestore.instance.collection("users").where("username", isEqualTo: user).get();
+      if (snap.docs.first.exists) {
+        email = snap.docs.first.data()["email"];
+      }
+    } on FirebaseException catch (e) {
+      log(e.code);
+    }
+    return email;
+  }
+
+  void login() async {
+    try {
+      Get.dialog(const Loading(), barrierDismissible: false);
+
+      // get email
+      final input = email.text.trim();
+      String? _email;
+      if (!input.isEmail) {
+        final value = await getEmail(input);
+        if (value == null) {
+          customSnackBar(message: "Username doesn't exist");
+          return;
+        }
+        _email = value;
+      } else {
+        _email = input;
+      }
+
+      // try to login
+      final userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: password.text.trim());
+
+      final user = userCredential.user!;
+
+      // get User data
+      await getUserInfo(user.uid);
+      Get.back();
+    } on FirebaseException catch (e) {
+      Get.back();
+      log(e.code);
+    }
+    reset();
+  }
 
   void register() async {
     if (photo.value == null) {
-      // Get.snackbar("Error", "Please select a profile picture");
       customSnackBar(message: "Please select a profile picture");
       return;
     }
@@ -91,12 +135,12 @@ class AuthController extends GetxController {
         await updateUserInfo({"photo": imageUrl}, user.uid);
       }
       await getUserInfo(user.uid);
-      reset();
       Get.back();
     } catch (e) {
       Get.back();
       log(e.toString());
     }
+    reset();
   }
 
   void logout() async {

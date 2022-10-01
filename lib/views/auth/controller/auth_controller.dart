@@ -96,6 +96,10 @@ class AuthController extends GetxController {
       customSnackBar(message: "Please select a profile picture");
       return;
     }
+    if (await getEmail(username.text.trim()) != null) {
+      customSnackBar(message: "Username exist");
+      return;
+    }
     try {
       Get.dialog(const Loading(), barrierDismissible: false);
       // collect info

@@ -10,57 +10,59 @@ class RootScreen extends GetView<NavigationController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      return Scaffold(
-        extendBody: true,
-        body: controller.screen,
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: controller.index.value,
-          onTap: (index) {
-            controller.goto(index);
-          },
-          type: BottomNavigationBarType.fixed,
-          unselectedItemColor: ksecondaryColor,
-          selectedItemColor: kprimaryColor,
-          items: [
-            const BottomNavigationBarItem(
-              label: "Home",
-              icon: Icon(Icons.home),
-            ),
-            BottomNavigationBarItem(
-              label: "Freunde",
-              icon: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(Icons.person),
-                  Icon(Icons.person),
-                ],
+    return Obx(
+      () {
+        return Scaffold(
+          extendBody: true,
+          body: controller.screen,
+          bottomNavigationBar: BottomNavigationBar(
+            currentIndex: controller.index.value,
+            onTap: (index) {
+              controller.goto(index);
+            },
+            type: BottomNavigationBarType.fixed,
+            unselectedItemColor: ksecondaryColor,
+            selectedItemColor: kprimaryColor,
+            items: [
+              const BottomNavigationBarItem(
+                label: "Home",
+                icon: Icon(Icons.home),
               ),
-            ),
-            const BottomNavigationBarItem(
-              label: "Kalender",
-              icon: Icon(TryMeIcons.calander),
-            ),
-            BottomNavigationBarItem(
-              label: "Kleiderschrank",
-              icon: SvgPicture.asset(
-                "assets/images/logo.svg",
-                color: controller.index == 3 ? kprimaryColor : ksecondaryColor,
-                height: 25,
-                width: 25,
+              BottomNavigationBarItem(
+                label: "Freunde",
+                icon: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(Icons.person),
+                    Icon(Icons.person),
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          child: const Icon(
-            Icons.add_rounded,
-            size: 40,
+              const BottomNavigationBarItem(
+                label: "Kalender",
+                icon: Icon(TryMeIcons.calander),
+              ),
+              BottomNavigationBarItem(
+                label: "Kleiderschrank",
+                icon: SvgPicture.asset(
+                  "assets/images/logo.svg",
+                  color: controller.index.value == 3 ? kprimaryColor : ksecondaryColor,
+                  height: 25,
+                  width: 25,
+                ),
+              ),
+            ],
           ),
-        ),
-      );
-    });
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {},
+            child: const Icon(
+              Icons.add_rounded,
+              size: 40,
+            ),
+          ),
+        );
+      },
+    );
   }
 }

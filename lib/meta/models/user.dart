@@ -25,3 +25,17 @@ class Users {
     );
   }
 }
+
+class SearchUser {
+  final Users user;
+  final int friends;
+
+  SearchUser(
+    this.user,
+    this.friends,
+  );
+
+  factory SearchUser.fromJson(Users user, int ourFriends) {
+    return SearchUser(user, ourFriends);
+  }
+}

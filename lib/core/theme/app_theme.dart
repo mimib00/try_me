@@ -6,6 +6,12 @@ class AppTheme {
   static final lightTheme = ThemeData(
     scaffoldBackgroundColor: Colors.white,
     fontFamily: 'Montserrat',
+    appBarTheme: const AppBarTheme(
+      elevation: 0,
+      backgroundColor: Colors.white,
+      centerTitle: true,
+      toolbarHeight: 80,
+    ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
         backgroundColor: const MaterialStatePropertyAll(kprimaryColor),

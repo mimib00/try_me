@@ -110,6 +110,8 @@ class AuthController extends GetxController {
         "username": username.text.trim(),
         "gender": gender,
         "photo": null,
+        "private": false,
+        "created_at": FieldValue.serverTimestamp(),
       };
 
       // create user

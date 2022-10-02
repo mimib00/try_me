@@ -82,6 +82,7 @@ class AddPostController extends GetxController {
       }
 
       Get.back();
+      Get.back();
     } on FirebaseException catch (e) {
       Get.back();
       log(e.code);

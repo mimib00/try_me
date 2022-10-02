@@ -4,6 +4,7 @@ class Users {
   final String name;
   final String username;
   final String photo;
+  final bool isPrivate;
 
   Users(
     this.uid,
@@ -11,6 +12,7 @@ class Users {
     this.name,
     this.username,
     this.photo,
+    this.isPrivate,
   );
   factory Users.fromJson(Map<String, dynamic> data, String uid) {
     return Users(
@@ -19,6 +21,7 @@ class Users {
       data["name"],
       data["username"],
       data["photo"],
+      data["private"],
     );
   }
 }

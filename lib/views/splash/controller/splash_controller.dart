@@ -5,10 +5,9 @@ import 'package:try_me/views/auth/controller/auth_controller.dart';
 
 class SplashController extends GetxController {
   @override
-  void onInit() async {
-    await Future.delayed(const Duration(seconds: 3));
-    final AuthController authController = Get.find();
+  void onInit() {
     FirebaseAuth.instance.authStateChanges().listen((user) async {
+      final AuthController authController = Get.find();
       if (user == null) {
         Get.offAllNamed(Routes.login);
       } else {

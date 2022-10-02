@@ -64,7 +64,7 @@ class RegisterScreen extends GetView<AuthController> {
                         controller: controller.name,
                         hint: "Vor- & Nachname",
                         validator: (value) {
-                          if (value == null || value.isEmpty) return "Field Required";
+                          if (value == null || value.isEmpty) return "Pflichtfeld";
                           return null;
                         },
                       ),
@@ -72,7 +72,7 @@ class RegisterScreen extends GetView<AuthController> {
                         controller: controller.username,
                         hint: "Nutzername",
                         validator: (value) {
-                          if (value == null || value.isEmpty) return "Field Required";
+                          if (value == null || value.isEmpty) return "Pflichtfeld";
                           return null;
                         },
                       ),
@@ -90,7 +90,7 @@ class RegisterScreen extends GetView<AuthController> {
                         hint: "Passwort",
                         obscure: true,
                         validator: (value) {
-                          if (value == null || value.isEmpty) return "Field Required";
+                          if (value == null || value.isEmpty) return "Pflichtfeld";
                           if (value.length < 6) return "Password must be 6 characters or more";
                           return null;
                         },
@@ -100,7 +100,7 @@ class RegisterScreen extends GetView<AuthController> {
                         hint: "Passwort wiederholen",
                         obscure: true,
                         validator: (value) {
-                          if (value == null || value.isEmpty) return "Field Required";
+                          if (value == null || value.isEmpty) return "Pflichtfeld";
                           if (value != controller.password.text.trim()) return "Passwords not matching";
                           return null;
                         },

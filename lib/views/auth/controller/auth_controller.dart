@@ -159,12 +159,12 @@ class AuthController extends GetxController {
       final userData = await FirebaseFirestore.instance
           .collection("users")
           .doc(uid)
-          .withConverter(
+          .withConverter<Users>(
             fromFirestore: (snapshot, options) => Users.fromJson(snapshot.data()!, snapshot.id),
             toFirestore: (value, options) => {},
           )
           .get();
-      users.value = userData.data();
+      users = Rx(userData.data());
       update();
     } on FirebaseException catch (e) {
       log(e.code);

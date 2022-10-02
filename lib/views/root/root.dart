@@ -3,6 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:try_me/meta/utils/constants.dart';
 import 'package:try_me/meta/utils/try_me_icons_icons.dart';
+import 'package:try_me/views/add_post/add_post.dart';
+import 'package:try_me/views/add_post/controller/add_post_controller.dart';
 import 'package:try_me/views/root/controller/navigation_controller.dart';
 
 class RootScreen extends GetView<NavigationController> {
@@ -55,7 +57,10 @@ class RootScreen extends GetView<NavigationController> {
           ),
           floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
           floatingActionButton: FloatingActionButton(
-            onPressed: () {},
+            onPressed: () {
+              Get.put(AddPostController());
+              Get.dialog(const AddPostScreen());
+            },
             child: const Icon(
               Icons.add_rounded,
               size: 40,

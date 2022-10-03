@@ -16,6 +16,53 @@ class FriendsController extends GetxController {
 
   RxString search = "".obs;
 
+  Future<List<SearchUser>> getInvites() async {
+    final user = controller.users.value!;
+    var data = <Map<String, dynamic>>[];
+
+    try {
+      final response = await dio.post(
+        getInvite,
+        data: {
+          'uid': user.uid,
+        },
+        options: Options(contentType: Headers.formUrlEncodedContentType),
+      );
+      if (response.statusCode == 200) {
+        data = response.data["result"].cast<Map<String, dynamic>>();
+      }
+    } on DioError catch (e) {
+      log(e.message);
+    }
+    List<SearchUser> users = [];
+
+    for (var doc in data) {
+      final friend = Users.fromJson(doc, doc["uid"]);
+      final friends = await getMutalFriend(user.uid, friend.uid);
+      users.add(SearchUser.fromJson(friend, friends, false));
+    }
+    return users;
+  }
+
+  Future<int> getMutalFriend(String uid, String friendId) async {
+    var friendsCount = 0;
+    try {
+      final response = await dio.post(
+        getMutalFriends,
+        data: {
+          'uid': uid,
+          'friend_id': friendId,
+        },
+        options: Options(contentType: Headers.formUrlEncodedContentType),
+      );
+
+      friendsCount = response.data["result"]["mutal_friends"];
+    } on DioError catch (e) {
+      log(e.message);
+    }
+    return friendsCount;
+  }
+
   Future<List<SearchUser>> searchUsers() async {
     final userSnap = await FirebaseFirestore.instance
         .collection("users")
@@ -28,10 +75,10 @@ class FriendsController extends GetxController {
         .get();
 
     final user = userSnap.docs.first.data();
+    final friendsCount = await getMutalFriend(controller.users.value!.uid, user.uid);
 
-    final snap = await FirebaseFirestore.instance.collection("users").doc(user.uid).collection("friends").get();
     final isFriend = controller.users.value!.friends.contains(user.uid);
-    final userData = SearchUser.fromJson(user, snap.docs.length, isFriend);
+    final userData = SearchUser.fromJson(user, friendsCount, isFriend);
     return [userData];
   }
 
@@ -56,6 +103,10 @@ class FriendsController extends GetxController {
     }
 
     return sent;
+  }
+
+  Future<bool> changeInviteStatus() async {
+    return false;
   }
 
   @override

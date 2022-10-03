@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:try_me/meta/models/user.dart';
@@ -38,7 +37,7 @@ class AddFriendScreen extends GetView<FriendsController> {
                       child: SingleChildScrollView(
                         physics: const BouncingScrollPhysics(),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             SearchInput(
                               hint: "Suche",
@@ -48,12 +47,41 @@ class AddFriendScreen extends GetView<FriendsController> {
                               },
                             ),
                             FutureBuilder<List<SearchUser>>(
+                              future: controller.getInvites(),
+                              builder: (context, snapshot) {
+                                if (snapshot.data == null || snapshot.data!.isEmpty) return Container();
+
+                                final result = snapshot.data!;
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Freundschaftsanfrage",
+                                        style: Theme.of(context).textTheme.labelMedium,
+                                      ),
+                                      ListView.builder(
+                                        shrinkWrap: true,
+                                        itemCount: result.length,
+                                        itemBuilder: (context, index) {
+                                          final user = result[index];
+                                          // return Text(user.friends.toString());
+                                          return UserRequestTile(result: user);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                            FutureBuilder<List<SearchUser>>(
                               future: controller.searchUsers(),
                               builder: (context, snapshot) {
                                 if (snapshot.connectionState == ConnectionState.waiting) {
                                   return const Center(child: Loading());
                                 }
-                                if (snapshot.data == null) return Container();
+                                if (snapshot.data == null || snapshot.data!.isEmpty) return Container();
 
                                 final result = snapshot.data!;
                                 return ListView.builder(

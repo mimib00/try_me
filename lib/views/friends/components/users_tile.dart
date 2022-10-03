@@ -71,3 +71,68 @@ class _UsersTileState extends State<UsersTile> {
     );
   }
 }
+
+class UserRequestTile extends StatelessWidget {
+  final SearchUser result;
+  const UserRequestTile({
+    super.key,
+    required this.result,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      leading: ClipRRect(
+        borderRadius: BorderRadius.circular(180),
+        child: CachedNetworkImage(
+          imageUrl: result.user.photo,
+          fit: BoxFit.cover,
+          width: 50,
+          height: 50,
+        ),
+      ),
+      title: Text(
+        result.user.name,
+        style: Theme.of(context).textTheme.labelLarge,
+      ),
+      subtitle: Text("${result.friends} gemeinsame Freunde"),
+      horizontalTitleGap: 5,
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          SizedBox(
+            width: 40,
+            child: ElevatedButton(
+              style: const ButtonStyle(padding: MaterialStatePropertyAll(EdgeInsets.zero)),
+              onPressed: () {},
+              child: const Icon(Icons.check_rounded),
+            ),
+          ),
+          const SizedBox(width: 5),
+          SizedBox(
+            width: 40,
+            child: ElevatedButton(
+              style: ButtonStyle(
+                padding: const MaterialStatePropertyAll(EdgeInsets.zero),
+                backgroundColor: const MaterialStatePropertyAll(Colors.white),
+                shape: MaterialStatePropertyAll(
+                  RoundedRectangleBorder(
+                    side: const BorderSide(color: kprimaryColor),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
+              onPressed: () {},
+              child: const Icon(
+                Icons.close_rounded,
+                color: kprimaryColor,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

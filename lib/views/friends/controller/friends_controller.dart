@@ -37,9 +37,9 @@ class FriendsController extends GetxController {
     List<SearchUser> users = [];
 
     for (var doc in data) {
-      final friend = Users.fromJson(doc, doc["uid"]);
+      final friend = Users.fromJson(doc["user"], doc["user"]["uid"]);
       final friends = await getMutalFriend(user.uid, friend.uid);
-      users.add(SearchUser.fromJson(friend, friends, false));
+      users.add(SearchUser.fromJson(doc["id"], friend, friends, false));
     }
     return users;
   }
@@ -78,7 +78,7 @@ class FriendsController extends GetxController {
     final friendsCount = await getMutalFriend(controller.users.value!.uid, user.uid);
 
     final isFriend = controller.users.value!.friends.contains(user.uid);
-    final userData = SearchUser.fromJson(user, friendsCount, isFriend);
+    final userData = SearchUser.fromJson(userSnap.docs.first.id, user, friendsCount, isFriend);
     return [userData];
   }
 
@@ -105,8 +105,26 @@ class FriendsController extends GetxController {
     return sent;
   }
 
-  Future<bool> changeInviteStatus() async {
-    return false;
+  Future<bool> changeInviteStatus(String requestId, bool status) async {
+    bool sent = false;
+    try {
+      final response = await dio.post(
+        changeFriendRequestStatus,
+        data: {
+          'uid': requestId,
+          'user': controller.users.value!.uid,
+          "status": status,
+        },
+        options: Options(contentType: Headers.formUrlEncodedContentType),
+      );
+      if (response.statusCode == 200) {
+        sent = true;
+      }
+    } on DioError catch (e) {
+      log(e.message);
+      sent = false;
+    }
+    return sent;
   }
 
   @override

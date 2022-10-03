@@ -66,7 +66,6 @@ class AddFriendScreen extends GetView<FriendsController> {
                                         itemCount: result.length,
                                         itemBuilder: (context, index) {
                                           final user = result[index];
-                                          // return Text(user.friends.toString());
                                           return UserRequestTile(result: user);
                                         },
                                       ),

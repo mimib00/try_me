@@ -61,7 +61,7 @@ class _UsersTileState extends State<UsersTile> {
             });
           },
           icon: loading
-              ? const CircularProgressIndicator()
+              ? const CircularProgressIndicator(color: kprimaryColor)
               : const Icon(
                   TryMeIcons.addFriends,
                   color: kprimaryColor,
@@ -72,12 +72,21 @@ class _UsersTileState extends State<UsersTile> {
   }
 }
 
-class UserRequestTile extends StatelessWidget {
+class UserRequestTile extends StatefulWidget {
   final SearchUser result;
   const UserRequestTile({
     super.key,
     required this.result,
   });
+
+  @override
+  State<UserRequestTile> createState() => _UserRequestTileState();
+}
+
+class _UserRequestTileState extends State<UserRequestTile> {
+  final FriendsController controller = Get.find();
+
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -86,53 +95,77 @@ class UserRequestTile extends StatelessWidget {
       leading: ClipRRect(
         borderRadius: BorderRadius.circular(180),
         child: CachedNetworkImage(
-          imageUrl: result.user.photo,
+          imageUrl: widget.result.user.photo,
           fit: BoxFit.cover,
           width: 50,
           height: 50,
         ),
       ),
       title: Text(
-        result.user.name,
+        widget.result.user.name,
         style: Theme.of(context).textTheme.labelLarge,
       ),
-      subtitle: Text("${result.friends} gemeinsame Freunde"),
+      subtitle: Text("${widget.result.friends} gemeinsame Freunde"),
       horizontalTitleGap: 5,
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          SizedBox(
-            width: 40,
-            child: ElevatedButton(
-              style: const ButtonStyle(padding: MaterialStatePropertyAll(EdgeInsets.zero)),
-              onPressed: () {},
-              child: const Icon(Icons.check_rounded),
-            ),
-          ),
-          const SizedBox(width: 5),
-          SizedBox(
-            width: 40,
-            child: ElevatedButton(
-              style: ButtonStyle(
-                padding: const MaterialStatePropertyAll(EdgeInsets.zero),
-                backgroundColor: const MaterialStatePropertyAll(Colors.white),
-                shape: MaterialStatePropertyAll(
-                  RoundedRectangleBorder(
-                    side: const BorderSide(color: kprimaryColor),
-                    borderRadius: BorderRadius.circular(10),
+      trailing: loading
+          ? const CircularProgressIndicator(color: kprimaryColor)
+          : Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                SizedBox(
+                  width: 40,
+                  child: ElevatedButton(
+                    style: const ButtonStyle(padding: MaterialStatePropertyAll(EdgeInsets.zero)),
+                    onPressed: () async {
+                      setState(() {
+                        loading = true;
+                      });
+                      final sent = await controller.changeInviteStatus(widget.result.uid, true);
+                      if (sent) {
+                        Get.back();
+                      }
+                      setState(() {
+                        loading = false;
+                      });
+                    },
+                    child: const Icon(Icons.check_rounded),
                   ),
                 ),
-              ),
-              onPressed: () {},
-              child: const Icon(
-                Icons.close_rounded,
-                color: kprimaryColor,
-              ),
+                const SizedBox(width: 5),
+                SizedBox(
+                  width: 40,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      padding: const MaterialStatePropertyAll(EdgeInsets.zero),
+                      backgroundColor: const MaterialStatePropertyAll(Colors.white),
+                      shape: MaterialStatePropertyAll(
+                        RoundedRectangleBorder(
+                          side: const BorderSide(color: kprimaryColor),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                    onPressed: () async {
+                      setState(() {
+                        loading = true;
+                      });
+                      final sent = await controller.changeInviteStatus(widget.result.uid, false);
+                      if (sent) {
+                        Get.back();
+                      }
+                      setState(() {
+                        loading = false;
+                      });
+                    },
+                    child: const Icon(
+                      Icons.close_rounded,
+                      color: kprimaryColor,
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
     );
   }
 }

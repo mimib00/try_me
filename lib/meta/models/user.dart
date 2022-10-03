@@ -30,18 +30,21 @@ class Users {
 }
 
 class SearchUser {
+  final String uid;
   final Users user;
   final int friends;
   final bool isFriend;
 
   SearchUser(
+    this.uid,
     this.user,
     this.friends,
     this.isFriend,
   );
 
-  factory SearchUser.fromJson(Users user, int ourFriends, bool isFriend) {
+  factory SearchUser.fromJson(String uid, Users user, int ourFriends, bool isFriend) {
     return SearchUser(
+      uid,
       user,
       ourFriends,
       isFriend,

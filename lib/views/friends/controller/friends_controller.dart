@@ -1,10 +1,15 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:try_me/core/config.dart';
 import 'package:try_me/meta/models/user.dart';
 import 'package:try_me/views/auth/controller/auth_controller.dart';
 
 class FriendsController extends GetxController {
+  final dio = Dio();
   final form = GlobalKey<FormState>();
 
   final AuthController controller = Get.find();
@@ -25,8 +30,32 @@ class FriendsController extends GetxController {
     final user = userSnap.docs.first.data();
 
     final snap = await FirebaseFirestore.instance.collection("users").doc(user.uid).collection("friends").get();
-    final userData = SearchUser.fromJson(user, snap.docs.length);
+    final isFriend = controller.users.value!.friends.contains(user.uid);
+    final userData = SearchUser.fromJson(user, snap.docs.length, isFriend);
     return [userData];
+  }
+
+  Future<bool> sendInvite(String uid) async {
+    final user = controller.users.value!;
+    bool sent = false;
+    try {
+      final response = await dio.post(
+        addFriend,
+        data: {
+          'sender': user.uid,
+          'friend': uid,
+        },
+        options: Options(contentType: Headers.formUrlEncodedContentType),
+      );
+      if (response.statusCode == 200) {
+        sent = true;
+      }
+    } on DioError catch (e) {
+      log(e.message);
+      sent = false;
+    }
+
+    return sent;
   }
 
   @override

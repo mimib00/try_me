@@ -158,11 +158,13 @@ class AuthController extends GetxController {
 
   Future<void> getUserInfo(String uid) async {
     try {
+      final friends = await FirebaseFirestore.instance.collection("users").doc(uid).collection("friends").get();
+      final friendList = friends.docs.map((e) => e.data()["friend_id"]).toList().cast<String>();
       final userData = await FirebaseFirestore.instance
           .collection("users")
           .doc(uid)
           .withConverter<Users>(
-            fromFirestore: (snapshot, options) => Users.fromJson(snapshot.data()!, snapshot.id),
+            fromFirestore: (snapshot, options) => Users.fromJson(snapshot.data()!, snapshot.id, friendList: friendList),
             toFirestore: (value, options) => {},
           )
           .get();

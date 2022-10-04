@@ -51,6 +51,7 @@ class FriendTile extends StatelessWidget {
             width: 100.w,
             height: 300,
             child: ListView.builder(
+              padding: EdgeInsets.only(bottom: 10),
               physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.horizontal,
               itemCount: 5,

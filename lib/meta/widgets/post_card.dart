@@ -14,6 +14,8 @@ class PostCard extends StatelessWidget {
     return SizedBox(
       width: 200,
       child: Card(
+        elevation: 5,
+        shadowColor: Colors.black45,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: Column(
           children: [
@@ -29,7 +31,7 @@ class PostCard extends StatelessWidget {
               ),
             ),
             ListTile(
-              contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+              contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
               leading: ClipRRect(
                 borderRadius: BorderRadius.circular(180),
                 child: CachedNetworkImage(
@@ -46,9 +48,9 @@ class PostCard extends StatelessWidget {
               subtitle: Text(
                 "von ${user.name}",
               ),
-              trailing: IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.favorite_outline),
+              trailing: GestureDetector(
+                onTap: () {},
+                child: const Icon(Icons.favorite_outline),
               ),
             ),
           ],

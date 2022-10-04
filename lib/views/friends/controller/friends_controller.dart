@@ -16,6 +16,30 @@ class FriendsController extends GetxController {
 
   RxString search = "".obs;
 
+  get friendsQuery =>
+      FirebaseFirestore.instance.collection("users").doc(controller.users.value!.uid).collection("friends");
+
+  // Future<List<Users>> getFriends() async {
+
+  //   try {
+  //     final snap = ;
+  //   } on FirebaseException catch (e) {
+  //     log(e.message ?? "");
+  //   }
+  //   return [];
+  // }
+
+  Future<Users> getFriendInfo(String uid) async {
+    Users? user;
+    try {
+      final snap = await FirebaseFirestore.instance.collection("users").doc(uid).get();
+      user = Users.fromJson(snap.data()!, snap.id);
+    } on FirebaseException catch (e) {
+      log(e.code);
+    }
+    return user!;
+  }
+
   Future<List<SearchUser>> getInvites() async {
     final user = controller.users.value!;
     var data = <Map<String, dynamic>>[];

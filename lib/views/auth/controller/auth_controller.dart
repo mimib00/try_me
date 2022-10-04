@@ -156,7 +156,7 @@ class AuthController extends GetxController {
     await FirebaseAuth.instance.signOut();
   }
 
-  Future<void> getUserInfo(String uid) async {
+  Future<Users> getUserInfo(String uid) async {
     try {
       final friends = await FirebaseFirestore.instance.collection("users").doc(uid).collection("friends").get();
       final friendList = friends.docs.map((e) => e.data()["friend_id"]).toList().cast<String>();
@@ -169,10 +169,12 @@ class AuthController extends GetxController {
           )
           .get();
       users = Rx(userData.data());
+
       update();
     } on FirebaseException catch (e) {
       log(e.code);
     }
+    return users.value!;
   }
 
   Future<void> updateUserInfo(Map<String, dynamic> data, String uid) async {

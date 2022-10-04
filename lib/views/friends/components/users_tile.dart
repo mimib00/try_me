@@ -5,6 +5,7 @@ import 'package:try_me/meta/models/user.dart';
 import 'package:try_me/meta/utils/constants.dart';
 import 'package:try_me/meta/utils/try_me_icons_icons.dart';
 import 'package:try_me/views/friends/controller/friends_controller.dart';
+import 'package:try_me/views/profile/profile.dart';
 
 class UsersTile extends StatefulWidget {
   final SearchUser result;
@@ -33,6 +34,9 @@ class _UsersTileState extends State<UsersTile> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap: () {
+        Get.bottomSheet(ProfileScreen(user: widget.result.user));
+      },
       leading: ClipRRect(
         borderRadius: BorderRadius.circular(180),
         child: CachedNetworkImage(
@@ -91,6 +95,9 @@ class _UserRequestTileState extends State<UserRequestTile> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap: () {
+        Get.bottomSheet(ProfileScreen(user: widget.result.user));
+      },
       contentPadding: EdgeInsets.zero,
       leading: ClipRRect(
         borderRadius: BorderRadius.circular(180),

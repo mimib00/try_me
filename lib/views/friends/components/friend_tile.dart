@@ -64,7 +64,8 @@ class FriendTile extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemCount: 5,
               itemBuilder: (context, index) {
-                return PostCard(user: user);
+                return Container();
+                // return PostCard(user: user);
               },
             ),
           ),

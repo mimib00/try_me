@@ -55,6 +55,7 @@ class AddPostController extends GetxController {
         "pices": pices.map((e) => e.name).toList(),
         "private": isPrivate.value,
         "owner": user.uid,
+        "created_at": FieldValue.serverTimestamp(),
       };
 
       // create post

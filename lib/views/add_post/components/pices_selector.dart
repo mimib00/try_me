@@ -56,7 +56,7 @@ class _PicesSelectorState extends State<PicesSelector> {
                     child: Padding(
                       padding: const EdgeInsets.all(8),
                       child: SvgPicture.asset(
-                        e.test,
+                        e.icon,
                         height: 30,
                         color: isSelected ? kprimaryColor : ksecondaryColor,
                       ),

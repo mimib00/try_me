@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 enum OutfitPices {
   shirt("assets/images/shirt.svg"),
   pants("assets/images/pants.svg"),
@@ -6,6 +8,15 @@ enum OutfitPices {
   shoe("assets/images/shoe.svg"),
   hat("assets/images/hat.svg");
 
-  final String test;
-  const OutfitPices(this.test);
+  final String icon;
+  const OutfitPices(this.icon);
+
+  factory OutfitPices.setOutfit(String name) {
+    switch (name) {
+      case "shirt":
+        return OutfitPices.shirt;
+      default:
+        return OutfitPices.shirt;
+    }
+  }
 }

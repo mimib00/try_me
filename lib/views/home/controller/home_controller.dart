@@ -13,6 +13,23 @@ class HomeController extends GetxController {
 
   get friendsQuery => FirebaseFirestore.instance.collection("users").doc(user.uid).collection("friends");
 
+  Query<Future<Post>> get publicPosts => FirebaseFirestore.instance
+      .collection("posts")
+      .where("private", isEqualTo: false)
+      .orderBy("created_at", descending: true)
+      .withConverter(
+        fromFirestore: (snapshot, options) async {
+          final userSnap = await FirebaseFirestore.instance.collection("users").doc(snapshot.data()!["owner"]).get();
+          final user = Users.fromJson(userSnap.data()!, userSnap.id);
+          return Post.fromJson(
+            snapshot.data()!,
+            snapshot.id,
+            user,
+          );
+        },
+        toFirestore: (value, options) => {},
+      );
+
   Future<List<Post>> getFriendsLatest() async {
     final friends = user.friends;
     List<Post> posts = [];
@@ -47,5 +64,18 @@ class HomeController extends GetxController {
     }
 
     return posts;
+  }
+
+  Future<List<Post>> getPublicPosts() async {
+    List<Post> posts = [];
+    try {
+      final snap = await FirebaseFirestore.instance
+          .collection("posts")
+          .where("private", isEqualTo: false)
+          .orderBy("created_at", descending: true);
+    } on FirebaseException catch (e) {
+      log(e.code);
+    }
+    return [];
   }
 }

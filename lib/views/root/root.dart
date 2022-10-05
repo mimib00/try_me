@@ -25,6 +25,7 @@ class RootScreen extends GetView<NavigationController> {
             type: BottomNavigationBarType.fixed,
             unselectedItemColor: ksecondaryColor,
             selectedItemColor: kprimaryColor,
+            enableFeedback: true,
             items: [
               const BottomNavigationBarItem(
                 label: "Home",

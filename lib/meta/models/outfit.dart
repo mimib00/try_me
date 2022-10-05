@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 enum OutfitPices {
   shirt("assets/images/shirt.svg"),
   pants("assets/images/pants.svg"),

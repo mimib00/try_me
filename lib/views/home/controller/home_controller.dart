@@ -65,17 +65,4 @@ class HomeController extends GetxController {
 
     return posts;
   }
-
-  Future<List<Post>> getPublicPosts() async {
-    List<Post> posts = [];
-    try {
-      final snap = await FirebaseFirestore.instance
-          .collection("posts")
-          .where("private", isEqualTo: false)
-          .orderBy("created_at", descending: true);
-    } on FirebaseException catch (e) {
-      log(e.code);
-    }
-    return [];
-  }
 }
